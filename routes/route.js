@@ -2,9 +2,6 @@ const express = require('express');
 const { route } = require('express/lib/application');
 const router = express.Router();
 
-const express = require('express');
-const app = express();
-
 // Q3. post api problem set
 
 
@@ -37,6 +34,15 @@ let players =
                "soccer"
            ],
        },
+       {
+        "name": "gaurav",
+        "dob": "1/1/1999",
+        "gender": "male",
+        "city": "raipur",
+        "sports": [
+            "soccer"
+        ],
+    },
    ]
 
 
@@ -66,7 +72,4 @@ let players =
 
 module.exports = router;
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+
