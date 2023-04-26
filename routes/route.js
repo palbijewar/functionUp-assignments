@@ -17,43 +17,43 @@ take this as sample for array of persons:
 */
 let persons = [
   {
-    name: "PK",
-    age: 10,
+    name: "Pal Bijewar",
+    age: 22,
     votingStatus: false,
   },
   {
-    name: "SK",
-    age: 20,
+    name: "Pragati",
+    age: 23,
     votingStatus: false,
   },
   {
-    name: "AA",
-    age: 70,
+    name: "Rahul",
+    age: 16,
     votingStatus: false,
   },
   {
-    name: "SC",
-    age: 5,
+    name: "Farheena",
+    age: 13,
     votingStatus: false,
   },
   {
-    name: "HO",
-    age: 40,
+    name: "Pritesh",
+    age: 25,
     votingStatus: false,
   },
 ];
-route.post("/person", (req, res) => {
-  const nameArr = [];
+route.post("/voting", (req, res) => {
+  const newArr = [];
   const votingAge = req.query.votingAge;
   for (let i = 0; i < persons.length; i++) {
     if (persons[i].age >= votingAge) {
       persons[i].votingStatus = true;
-      nameArr.push(persons[i].name);
+      newArr.push(persons[i].name);
     }
   }
-  res.send({ data: { eligibleToVote: nameArr },modifiedPersonData:persons, status: true });
+  res.send({ data: { eligibleToVote: newArr },modifiedPersonData:persons, status: true });
   
-  console.log(nameArr);
+  console.log(newArr);
 });
 
 module.exports = route;
