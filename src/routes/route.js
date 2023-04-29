@@ -6,6 +6,15 @@ const bookController = require("../controller/bookController.js")
 
 router.post("/book", bookController.createBook  );
 
-router.get("/getUsersData", bookController.getBook);
+router.get("/getBook", bookController.getBook);
+
+router.get("/getBooksInYear", bookController.getBooksInYear);
+
+router.post("/getParticularBook", bookController.getParticularBook);
+
+router.get("/getXINRBooks", bookController.getXINRBooks);
+
+router.get("/getRandomBooks", bookController.getRandomBooks);
+
 
 module.exports = router;
