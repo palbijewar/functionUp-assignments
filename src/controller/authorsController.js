@@ -1,11 +1,12 @@
 const authorsModel = require("../models/authorsModel");
-const booksModel = require("../models/booksModel");
+
 
 const authors = async function(req,res){
     const data = req.body;
     const authorDetails = await authorsModel.create(data);
     res.send({data : authorDetails});
 };
+
 
 const getAuthors = async function(req,res) {
     const data = req.query;
