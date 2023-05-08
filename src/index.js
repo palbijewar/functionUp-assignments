@@ -1,8 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const route = require('../src/routes/booksRoute');
-const route2 = require('../src/routes/authorsRoute');
-const route3 = require('../src/routes/publishersRoute');
+const route = require('./routes/route');
+
 
 const { default: mongoose } = require('mongoose');
 const app = express();
@@ -18,11 +17,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/bookAPI", {
 .catch ( err => console.log(err) )
 
 app.use('/', route);
-app.use('/', route2);
-app.use('/', route3);
-
-
-
 
 
 app.listen(process.env.PORT || 3000, function () {
