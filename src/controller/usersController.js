@@ -2,61 +2,51 @@ const usersModel = require('../models/usersModel');
 const jwt = require('jsonwebtoken')
 
 const users = async (req,res)=>{
-    const data = req.body;
+  try {
+    const data = req.body; 
     const user = await usersModel.create(data);
-    res.send({user})
-};
+    res.status(200).json({status:true,msg : user});
+  } catch (error) {
+    res.status(404).json({status:false, error :error})
+  }
+}
 
 const login = async (req,res)=>{
-    try{
-    const {email,password} = req.body;
-    if(!email && !password) return  res.send({msg :"please enter valid email and password"});
-    const user = await usersModel.findOne({email});
-    if(!user) {
-        res.send({msg : "no user found!"})
-    }
-    if(user.password==password){
-        const token = jwt.sign({_id:user._id}, "SECRET",{
-            expiresIn :"3d"
-    }) 
-    res.status(200).set("Authorization", "bearer" + token).json({token,user})
-    console.log(token)
-    }
-} catch(error){
-    console.log(error)
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const user = await usersModel.findOne({ email: email, password: password });
+  if (!user)
+    return res.send({
+      status: false,
+      msg: "username or the password is not correct",
+    });
+  const token = jwt.sign({userId: user._id.toString()},"SECRET");
+  res.setHeader("x-auth-token", token);
+  res.send({ status: true, data: token });
+};
+
+const verify = async (req,res)=>{
+  const userId = req.params.userId;
+  const user = await usersModel.findById(userId);
+  if(!user) res.send({status:false, msg:"invalid token!!"})
+  res.send({status:true, msg:user})
+};
+
+const update = async (req,res)=>{
+  const userId = req.params.userId;
+  const user = await usersModel.findOneAndUpdate({_id:userId},{password:09876},{new:true});
+  res.send({user})
+};
+
+const deleteUser = async (req,res)=>{
+  const userId = req.params.userId;
+  const user = await usersModel.findOneAndUpdate({_id:userId},{isDelete:true},{new:true});
+  res.send({user})
 }
-};
-
-const verification = async (req,res)=>{
-res.send({msg :"valid token!"});
-};
-
-const updateUser = async function (req, res) {
-    let userId = req.params.userId;
-    let data = req.body;
-    let user = await usersModel.findById(userId);
-    if(user)
-    {
-      let updatedData = await usersModel.findOneAndUpdate(
-        { _id: userId },
-        data,
-        { new: true }
-      );
-      res.send(updatedData);
-    }
-    else
-    {
-      res.send("wrong user id");
-    }
-};  
-
-const deleteUser = async (req, res) =>{
-    const userId = req.params.userId;
-    const user = await usersModel.findById(userId);
-    user.isDelete = true
-    user.save()
-    res.send(user)
-  };
 
 
-module.exports = {users,login,verification,updateUser,deleteUser}
+
+
+
+module.exports = {users,login,verify,update,deleteUser}
